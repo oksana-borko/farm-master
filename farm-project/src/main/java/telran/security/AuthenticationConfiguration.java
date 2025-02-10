@@ -13,7 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import telran.entity.CustomerAccount;
+import telran.entity.Customer;
+
 
 
 @Configuration
@@ -28,7 +29,7 @@ public class AuthenticationConfiguration implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		CustomerAccount user = template.findById(username, CustomerAccount.class);
+		Customer user = template.findById(username, Customer.class);
 		if(user == null)
 			throw new UsernameNotFoundException(username);
 		
