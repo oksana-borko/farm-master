@@ -5,8 +5,11 @@ import java.util.Set;
 import farming.farmer.dto.AddressDto;
 import farming.farmer.dto.FarmerDto;
 import farming.products.entity.Product;
+import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -28,16 +31,30 @@ import lombok.NoArgsConstructor;
 public class Farmer {
 
 	@Id
-	Long farmerId;
-	String firstName;
-	String lastName;
-	String email;
-	String phone;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long farmerId;
+	
+	@Column(nullable=false, length=50)
+	private String firstName;
+	
+	@Column(nullable=false, length=50)
+	private String lastName;
+	
+	@Column(nullable=false, length=150, unique=true)
+	private String email;
+	
+	@Column(nullable=false)
+	private double balance;
+	
+	@Column(nullable=false)
+	private String password;
+	
+	@Column(nullable=false)
+	private String phone;
 	
 	@Embedded
-	AddressDto address;
+	private AddressDto address;
 	
-	double balance;
 	
 	@ManyToMany(mappedBy = "farmers")
 	@JoinTable(name = "farmer_products", joinColumns = @JoinColumn(name = "farmer_id"),
@@ -55,4 +72,5 @@ public class Farmer {
 				phone(phone).address(address)
 				.build();
 	}
+
 }
