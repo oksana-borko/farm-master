@@ -1,45 +1,36 @@
 package farming.products.service;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import farming.cart.dto.CartDto;
-import farming.cart.dto.CartItemDto;
-import farming.cart.entity.Cart;
 import farming.customer.entity.Customer;
+import farming.customer.repo.CustomerRepository;
 import farming.farmer.entity.Farmer;
+import farming.farmer.repo.FarmerRepositiry;
 import farming.products.dto.ProductDto;
 import farming.products.dto.RemoveProductDataDto;
 import farming.products.dto.SaleRecordsDto;
 import farming.products.entity.Product;
 import farming.products.entity.SaleRecords;
-import farming.repo.CartItemRepository;
-import farming.repo.CartRepository;
-import farming.repo.CustomerRepository;
-import farming.repo.FarmerRepositiry;
-import farming.repo.ProductsRepository;
-import farming.repo.SaleRecordsRepository;
+import farming.products.repo.ProductsRepository;
+import farming.products.repo.SaleRecordsRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class ProductsService implements IProductsService{
 
-	@Autowired
-	ProductsRepository productRepo;
-	@Autowired
-	FarmerRepositiry farmerRepo;
-	@Autowired
-	SaleRecordsRepository saleRecordsRepo;
-	@Autowired
-	CustomerRepository customerRepo;
+	final ProductsRepository productRepo;
+	final FarmerRepositiry farmerRepo;
+	final SaleRecordsRepository saleRecordsRepo;
+	final CustomerRepository customerRepo;
 	
 	
 	@Override

@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @Getter
 public class RolesResponseDto {
 	
-	
 	private String login;
 	private HashSet<String> roles;
 
