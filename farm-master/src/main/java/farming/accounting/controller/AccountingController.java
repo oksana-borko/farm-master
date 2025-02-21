@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import farming.accounting.dto.RolesResponseDto;
+
 import farming.accounting.dto.UserRequestDto;
 import farming.accounting.dto.UserResponseDto;
 import farming.accounting.service.IAccountingManagement;
@@ -25,11 +25,12 @@ public class AccountingController{
 	@Autowired
 	IAccountingManagement service;
 
-	@PostMapping({"/register", "/register/"})
-	public UserResponseDto registration(@RequestBody UserRequestDto user) {
-		return service.registration(user);
-	}
-
+	/*
+	 * @PostMapping({"/register", "/register/"}) public UserResponseDto
+	 * registration(@RequestBody UserRequestDto user) { return
+	 * service.registration(user); }
+	 */
+	
 	@DeleteMapping("/user/{login}")
 	public UserResponseDto removeUser(@PathVariable String login) {
 		return service.removeUser(login);
@@ -60,15 +61,15 @@ public class AccountingController{
 		return service.activateAccount(login);
 	}
 
-	@PutMapping("/user/{login}/role/{role}")
-	public RolesResponseDto addRole(@PathVariable String login, @PathVariable String role) {
-		return service.addRole(login, role);
-	}
-
-	@DeleteMapping("/user/{login}/role/{role}")
-	public RolesResponseDto removeRole(@PathVariable String login, @PathVariable String role) {
-		return service.removeRole(login, role);
-	}
+	/*
+	 * @PutMapping("/user/{login}/role/{role}") public RolesResponseDto
+	 * addRole(@PathVariable String login, @PathVariable String role) { return
+	 * service.addRole(login, role); }
+	 * 
+	 * @DeleteMapping("/user/{login}/role/{role}") public RolesResponseDto
+	 * removeRole(@PathVariable String login, @PathVariable String role) { return
+	 * service.removeRole(login, role); }
+	 */
 
 	@GetMapping("/password/{login}")
 	public String getPasswordHash(@PathVariable String login) {
@@ -79,10 +80,8 @@ public class AccountingController{
 	public LocalDateTime getActivationDate(@PathVariable String login) {
 	return service.getActivationDate(login);
 	}
-
-	@GetMapping("/roles/{login}")
-	public RolesResponseDto getRoles(@PathVariable String login) {
-		return service.getRoles(login);
-	}
-	
+	/*
+	 * @GetMapping("/roles/{login}") public RolesResponseDto getRoles(@PathVariable
+	 * String login) { return service.getRoles(login); }
+	 */
 }
