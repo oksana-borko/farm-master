@@ -126,10 +126,10 @@ public class FarmerController {
     }
 
     @GetMapping("/by-product/{productId}")
-    public ResponseEntity<Set<FarmerDto>> getFarmersByProduct(@PathVariable Long productId) {
-        log.info("Request to get farmers by product ID: {}", productId);
-        Set<FarmerDto> farmers = farmerService.getFarmersByProduct(productId);
-        log.debug("Returning {} farmers for product ID: {}", farmers.size(), productId);
+    public ResponseEntity <FarmerDto> getFarmersByProduct(@PathVariable Long productId) {
+        log.info("Request to get farmer by product ID: {}", productId);
+       FarmerDto farmers = farmerService.getFarmerByProduct(productId);
+        log.debug("Returning {} farmer for product ID: {}", farmers, productId);
         return ResponseEntity.ok(farmers);
     }
 

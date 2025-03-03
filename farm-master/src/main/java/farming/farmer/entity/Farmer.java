@@ -41,7 +41,7 @@ public class Farmer  {
 	@Embedded
 	Address address;
 	
-	@ManyToMany(mappedBy = "farmers")
+	@OneToMany(mappedBy = "farmer")
 	Set<Product> products;
 	
 	@OneToMany(mappedBy = "farmer")

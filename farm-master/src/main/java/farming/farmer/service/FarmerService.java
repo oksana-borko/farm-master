@@ -47,7 +47,7 @@ public class FarmerService implements IFarmerService{
 	}
 
 	@Override
-	public Set<FarmerDto> getFarmersByProduct(Long productId) {
+	public FarmerDto getFarmerByProduct(Long productId) {
 //		Product product = productRepo.findById(productId).orElseThrow(() ->
 //		new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found"));
 //		return product.getFarmers().stream().map(Farmer::build).collect(Collectors.toSet());
@@ -57,11 +57,10 @@ public class FarmerService implements IFarmerService{
 					log.error("Product not found with ID: {}", productId);
 					return new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found");
 				});
-		Set<FarmerDto> farmers = product.getFarmers().stream()
-				.map(Farmer::build)
-				.collect(Collectors.toSet());
-		log.debug("Found {} farmers for product ID: {}", farmers.size(), productId);
-		return farmers;
+		
+		 return product.getFarmer().build();
+		
+
 	}
 
 	@Override

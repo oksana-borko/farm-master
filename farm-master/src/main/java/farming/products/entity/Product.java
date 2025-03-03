@@ -23,17 +23,15 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-	public String productName;
-	public int quantity;
-	public Double price;
-	public String imgUrl;
+    private Long id;
+    private String productName;
+    private int quantity;
+    private Double price;
+    private String imgUrl;
 
-	@ManyToMany
-	 @JoinTable(name = "farmers_products", 
-	 			joinColumns = @JoinColumn(name = "product_id"),
-		        inverseJoinColumns = @JoinColumn(name = "farmer_id"))
-	List<Farmer> farmers = new ArrayList<>();
+	@ManyToOne
+	@JoinColumn()
+	private Farmer farmer;
 	
 	private boolean deleted = false;
 	
@@ -48,10 +46,8 @@ public class Product {
     }
 
 	public ProductDto toDto() {
-        FarmerDto farmerDto = null;
-        if (!farmers.isEmpty()) {
-            farmerDto = farmers.get(0).build(); 
-        }
+        FarmerDto farmerDto = farmer.build();
+      
         return ProductDto.builder()
                 .productId(id)
                 .productName(productName)

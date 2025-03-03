@@ -9,7 +9,7 @@ import farming.farmer.dto.FarmerDto;
 public interface IFarmerService {
 
 	FarmerDto getFarmer(Long farmerId);
-	Set<FarmerDto> getFarmersByProduct(Long productId);
+	FarmerDto getFarmerByProduct(Long productId);
 	List<FarmerDto> getAllFarmers();
 	void createFarmerProfile(UserAccount user);
 	FarmerDto updateFarmer(Long farmerId, FarmerDto dto);

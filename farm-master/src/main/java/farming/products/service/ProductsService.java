@@ -85,7 +85,7 @@ public class ProductsService implements IProductsService{
 	    Product product;
 	    try {
 	        product = Product.of(productDto);
-	        product.setFarmers(Collections.singletonList(farmer));
+	        product.setFarmer(farmer);
 	        productRepo.save(product);
 	    } catch (Exception e) {
 	        log.error("Failed to save product: {}", e.getMessage(), e);
@@ -111,7 +111,7 @@ public class ProductsService implements IProductsService{
                     log.error("Farmer profile not found for user: {}", user.getLogin());
                     return new ResponseStatusException(HttpStatus.NOT_FOUND, "Farmer profile not found");
                 });
-        if (!product.getFarmers().stream().anyMatch(f -> f.getFarmerId().equals(farmer.getFarmerId()))) {
+        if (product.getFarmer() == null) {
             log.warn("Farmer {} does not own product ID {}, access denied", farmer.getFarmerId(), productDto.getProductId());
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You can only update products you own");
         }
@@ -156,13 +156,13 @@ public class ProductsService implements IProductsService{
 	    }
 	    
 	    log.debug("Checking if farmer ID {} owns product ID {}", farmerId, productId);
-	    if (product.getFarmers() == null || !product.getFarmers().stream().anyMatch(f -> f.getFarmerId().equals(farmerId))) {
+	    if (product.getFarmer() == null) {
 	        log.warn("Farmer ID {} does not own product ID {}", farmerId, productId);
 	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Farmer doesn't own this product");
 	    }
 	    
 	    log.debug("Removing farmer ID {} from product ID {}", farmerId, productId);
-	    product.getFarmers().removeIf(f -> f.getFarmerId().equals(farmerId));
+	    product.getFarmer();
 	    productRepo.saveAndFlush(product);
 
 	    log.debug("Fetching sales for product ID {}", productId);
@@ -175,7 +175,7 @@ public class ProductsService implements IProductsService{
 	            .build();
 	    removeProductDataRepo.saveAndFlush(removeData);
 
-	    if (product.getFarmers().isEmpty()) {
+	    if (product.getFarmer() == null) {
 	        log.info("Marking product ID {} as deleted as no farmers remain", productId);
 	        product.setDeleted(true);  // Помечаем как удалённый вместо удаления
 	        productRepo.save(product);
@@ -266,18 +266,13 @@ public class ProductsService implements IProductsService{
 	    }
 	    
 	    log.debug("Checking farmers for product ID {}", productId);
-	    if (product.getFarmers() == null || product.getFarmers().isEmpty()) {
+	    if (product.getFarmer() == null) {
 	        log.error("No farmers associated with product ID: {}", productId);
 	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No farmer associated with product");
 	    }
 	    
-	    Farmer farmer = product.getFarmers().stream()
-	            .findFirst()
-	            .orElseThrow(() -> {
-	                log.error("No farmer associated with product ID: {}", productId);
-	                return new ResponseStatusException(HttpStatus.NOT_FOUND, "No farmer associated with product");
-	            });
-	    
+	    Farmer farmer = product.getFarmer();
+	      
 	    log.debug("Checking stock for product ID {}", productId);
 	    if (product.getQuantity() < quantity) {
 	        log.warn("Not enough stock for product ID {}: requested {}, available {}", productId, quantity, product.getQuantity());
