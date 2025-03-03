@@ -30,7 +30,7 @@ public class Product {
     private String imgUrl;
 
 	@ManyToOne
-	@JoinColumn()
+	@JoinColumn(name = "farmer_id")
 	private Farmer farmer;
 	
 	private boolean deleted = false;
@@ -45,7 +45,7 @@ public class Product {
 	            .build();
     }
 
-	public ProductDto toDto() {
+	public ProductDto toDto() { ////
         FarmerDto farmerDto = farmer.build();
       
         return ProductDto.builder()
